@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Header.css'
 
 const NAV_LINKS = [
-  { href: '#home', label: 'Home' },
-  { href: '#book', label: 'Book Tickets' },
-  { href: '#schedules', label: 'Schedules' },
-  { href: '#about', label: 'About' },
+  { to: '/', label: 'Home' },
+  { to: '#book', label: 'Book Tickets' },
+  { to: '#schedules', label: 'Schedules' },
+  { to: '/about', label: 'About' },
 ]
 
 /**
@@ -21,35 +22,45 @@ export function Header() {
           className="site-header__nav"
           aria-label="Primary"
         >
-          <a href="#home" className="site-header__brand">
+          <Link to="/" className="site-header__brand">
             <span className="site-header__brand-mark">PakRail</span>
             <span className="site-header__brand-sub">Pakistan Railways</span>
-          </a>
+          </Link>
 
           <ul
             id="site-header-menu"
             className={`site-header__links ${menuOpen ? 'site-header__links--open' : ''}`}
           >
-            {NAV_LINKS.map(({ href, label }) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  className="site-header__link"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {label}
-                </a>
+            {NAV_LINKS.map(({ to, label }) => (
+              <li key={to}>
+                {to.startsWith('#') ? (
+                  <a
+                    href={to}
+                    className="site-header__link"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {label}
+                  </a>
+                ) : (
+                  <Link
+                    to={to}
+                    className="site-header__link"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
 
           <div className="site-header__actions">
-            <a href="#login" className="site-header__login">
+            <Link to="/login" className="site-header__login">
               Login
-            </a>
-            <a href="#signup" className="site-header__signup">
+            </Link>
+            <Link to="/signup" className="site-header__signup">
               Sign Up
-            </a>
+            </Link>
             <a href="#book" className="site-header__cta">
               Book Now
             </a>

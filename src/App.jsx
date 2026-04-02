@@ -1,8 +1,14 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { TrainRouteCard } from './components/TrainRouteCard'
 import { FeatureCard } from './components/FeatureCard'
 import { Footer } from './components/Footer'
+import { Login } from './components/Login'
+import { SignUp } from './components/SignUp'
+import { AdminLogin } from './components/AdminLogin'
+import { AdminDashboard } from './components/AdminDashboard'
+import { About } from './pages/About'
 import './App.css'
 
 const SAMPLE_ROUTES = [
@@ -50,53 +56,66 @@ const FEATURES = [
   },
 ]
 
+function HomePage() {
+  return (
+    <>
+      <Hero />
+      <section
+        className="routes-section"
+        id="schedules"
+        aria-labelledby="routes-heading"
+      >
+        <div className="routes-section__inner">
+          <header className="routes-section__head">
+            <h2 id="routes-heading" className="routes-section__title">
+              Featured routes
+            </h2>
+            <p className="routes-section__lead">
+              Sample intercity services — schedules and fares in the full system.
+            </p>
+          </header>
+          <div className="routes-section__grid">
+            {SAMPLE_ROUTES.map((props) => (
+              <TrainRouteCard key={props.routeName} {...props} />
+            ))}
+          </div>
+        </div>
+      </section>
+      <section
+        className="features-section"
+        id="features"
+      >
+        <div className="features-section__inner">
+          <header className="features-section__head">
+            <h2 className="features-section__title">Why travel with PakRail?</h2>
+            <p className="features-section__lead">Everything you need for a seamless journey.</p>
+          </header>
+          <div className="features-section__grid">
+            {FEATURES.map((props) => (
+              <FeatureCard key={props.title} {...props} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+
 function App() {
   return (
-    <div className="app">
+    <Router>
       <Header />
       <main>
-        <Hero />
-        <section
-          className="routes-section"
-          id="schedules"
-          aria-labelledby="routes-heading"
-        >
-          <div className="routes-section__inner">
-            <header className="routes-section__head">
-              <h2 id="routes-heading" className="routes-section__title">
-                Featured routes
-              </h2>
-              <p className="routes-section__lead">
-                Sample intercity services — schedules and fares in the full system.
-              </p>
-            </header>
-            <div className="routes-section__grid">
-              {SAMPLE_ROUTES.map((props) => (
-                <TrainRouteCard key={props.routeName} {...props} />
-              ))}
-            </div>
-          </div>
-        </section>
-        <section
-          className="features-section"
-          id="features"
-        >
-          <div className="features-section__inner">
-            <header className="features-section__head">
-              <h2 className="features-section__title">Why travel with PakRail?</h2>
-              <p className="features-section__lead">Everything you need for a seamless journey.</p>
-            </header>
-            <div className="features-section__grid">
-              {FEATURES.map((props) => (
-                <FeatureCard key={props.title} {...props} />
-              ))}
-            </div>
-          </div>
-        </section>
-
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </main>
       <Footer />
-    </div>
+    </Router>
   )
 }
 
