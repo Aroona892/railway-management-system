@@ -1,0 +1,93 @@
+.app {
+  min-height: 100svh;
+}
+
+.routes-section {
+  padding: 2rem 1.25rem 4rem;
+  background: linear-gradient(180deg, var(--bg-page) 0%, #ffffff 35%);
+}
+
+.routes-section__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.routes-section__head {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.routes-section__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+.routes-section__lead {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.routes-section__grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .routes-section__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .routes-section__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+}
+
+.freight-teaser {
+  padding: 1.5rem 1.25rem;
+  background: rgba(1, 65, 28, 0.04);
+  border-top: 1px solid var(--border-soft);
+}
+
+.freight-teaser__inner {
+  max-width: 42rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.freight-teaser p {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.freight-teaser strong {
+  color: var(--pak-green);
+}
+
+.site-footer {
+  padding: 2rem 1.25rem;
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-white);
+}
+
+.site-footer__text {
+  margin: 0 auto;
+  max-width: 42rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
