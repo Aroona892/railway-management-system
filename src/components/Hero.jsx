@@ -21,7 +21,7 @@ export function Hero() {
             <span className="hero__title-line"> Pakistan</span>
           </h1>
           <p className="hero__lead">
-            Book seats, check live schedules, and manage freight — one modern
+            Book seats, check live schedules, and manage your reservations — all from one modern
             platform for Pakistan Railways.
           </p>
         </div>

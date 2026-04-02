@@ -63,6 +63,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem 1.5rem;
+  justify-content: center;
 }
 
 .site-header__link {
@@ -103,6 +104,39 @@
   background: #023a1a;
   transform: translateY(-1px);
   box-shadow: 0 8px 20px -4px rgba(1, 65, 28, 0.5);
+}
+
+.site-header__login {
+  color: var(--text-body);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: color 0.25s ease;
+}
+
+.site-header__login:hover {
+  color: var(--accent-emerald);
+}
+
+.site-header__signup {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.35rem;
+  background: transparent;
+  color: var(--pak-green);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  border: 2px solid var(--pak-green);
+  border-radius: 9999px;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.site-header__signup:hover {
+  background: var(--pak-green);
+  color: var(--text-on-green);
+  transform: translateY(-1px);
 }
 
 .site-header__menu-btn {

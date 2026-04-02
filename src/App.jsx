@@ -1,6 +1,8 @@
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { TrainRouteCard } from './components/TrainRouteCard'
+import { FeatureCard } from './components/FeatureCard'
+import { Footer } from './components/Footer'
 import './App.css'
 
 const SAMPLE_ROUTES = [
@@ -27,6 +29,24 @@ const SAMPLE_ROUTES = [
     duration: '~32 hours',
     badge: 'Economy',
     variant: 'c',
+  },
+]
+
+const FEATURES = [
+  {
+    title: 'Live Route Tracking',
+    description: 'Stay ahead with real-time train status, live arrival predictions, and route updates.',
+    icon: '🔍',
+  },
+  {
+    title: 'Instant Seat Booking',
+    description: 'Lock your favorite seat in seconds and enjoy fast, secure checkout from your phone.',
+    icon: '🎫',
+  },
+  {
+    title: 'Manage Reservations',
+    description: 'Easily modify or cancel your upcoming trips with flexible, hassle-free controls.',
+    icon: '📋',
   },
 ]
 
@@ -57,21 +77,25 @@ function App() {
             </div>
           </div>
         </section>
-        <section id="freight" className="freight-teaser" aria-label="Freight">
-          <div className="freight-teaser__inner">
-            <p>
-              <strong>Freight &amp; logistics</strong> — booking and tracking modules
-              plug in here in the full management system.
-            </p>
+        <section
+          className="features-section"
+          id="features"
+        >
+          <div className="features-section__inner">
+            <header className="features-section__head">
+              <h2 className="features-section__title">Why travel with PakRail?</h2>
+              <p className="features-section__lead">Everything you need for a seamless journey.</p>
+            </header>
+            <div className="features-section__grid">
+              {FEATURES.map((props) => (
+                <FeatureCard key={props.title} {...props} />
+              ))}
+            </div>
           </div>
         </section>
-        <footer className="site-footer" id="about">
-          <p className="site-footer__text">
-            Pakistan Railways Management System — demo landing. Corporate and support
-            links can connect from this area in production.
-          </p>
-        </footer>
+
       </main>
+      <Footer />
     </div>
   )
 }

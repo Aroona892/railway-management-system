@@ -5,7 +5,6 @@ const NAV_LINKS = [
   { href: '#home', label: 'Home' },
   { href: '#book', label: 'Book Tickets' },
   { href: '#schedules', label: 'Schedules' },
-  { href: '#freight', label: 'Freight' },
   { href: '#about', label: 'About' },
 ]
 
@@ -45,6 +44,12 @@ export function Header() {
           </ul>
 
           <div className="site-header__actions">
+            <a href="#login" className="site-header__login">
+              Login
+            </a>
+            <a href="#signup" className="site-header__signup">
+              Sign Up
+            </a>
             <a href="#book" className="site-header__cta">
               Book Now
             </a>
