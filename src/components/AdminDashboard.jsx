@@ -5,9 +5,9 @@ export function AdminDashboard() {
   const [activeSection, setActiveSection] = useState('overview')
 
   const menuItems = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'trains', label: 'Manage Trains', icon: '🚂' },
-    { id: 'bookings', label: 'Passenger Bookings', icon: '🎫' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'trains', label: 'Manage Trains' },
+    { id: 'bookings', label: 'Passenger Bookings' },
   ]
 
   const mockTrains = [
@@ -109,7 +109,6 @@ export function AdminDashboard() {
       <aside className="admin-sidebar">
         <div className="admin-sidebar__header">
           <div className="admin-sidebar__brand">
-            <span className="admin-sidebar__brand-icon">🚂</span>
             <span className="admin-sidebar__brand-text">PakRail Admin</span>
           </div>
         </div>
@@ -124,7 +123,6 @@ export function AdminDashboard() {
                   }`}
                   onClick={() => setActiveSection(item.id)}
                 >
-                  <span className="admin-sidebar__menu-icon">{item.icon}</span>
                   <span className="admin-sidebar__menu-text">{item.label}</span>
                 </button>
               </li>
@@ -134,7 +132,6 @@ export function AdminDashboard() {
 
         <div className="admin-sidebar__footer">
           <button className="admin-sidebar__logout">
-            <span className="admin-sidebar__logout-icon">🚪</span>
             <span className="admin-sidebar__logout-text">Logout</span>
           </button>
         </div>
@@ -149,7 +146,7 @@ export function AdminDashboard() {
             </h1>
             <div className="admin-main__header-actions">
               <div className="admin-main__user">
-                <span className="admin-main__user-avatar">👤</span>
+
                 <span className="admin-main__user-name">Admin User</span>
               </div>
             </div>
@@ -161,7 +158,6 @@ export function AdminDashboard() {
             {activeSection === 'overview' && (
               <div className="overview-stats">
                 <div className="stat-card">
-                  <div className="stat-card__icon">🎫</div>
                   <div className="stat-card__content">
                     <h3 className="stat-card__value">1,245</h3>
                     <p className="stat-card__label">Total Bookings</p>
@@ -169,7 +165,6 @@ export function AdminDashboard() {
                 </div>
 
                 <div className="stat-card">
-                  <div className="stat-card__icon">🚂</div>
                   <div className="stat-card__content">
                     <h3 className="stat-card__value">18</h3>
                     <p className="stat-card__label">Active Trains</p>
@@ -177,7 +172,6 @@ export function AdminDashboard() {
                 </div>
 
                 <div className="stat-card">
-                  <div className="stat-card__icon">💰</div>
                   <div className="stat-card__content">
                     <h3 className="stat-card__value">₨ 450,000</h3>
                     <p className="stat-card__label">Today's Revenue</p>
@@ -191,10 +185,7 @@ export function AdminDashboard() {
                 <div className="admin-section__header">
                   <h2 className="admin-section__title">Train Management</h2>
                   <p className="admin-section__subtitle">Monitor and manage train operations</p>
-                  <button className="admin-btn admin-btn--primary">
-                    <span className="admin-btn__icon">+</span>
-                    Add New Train
-                  </button>
+                  <button className="admin-btn admin-btn--primary">Add New Train</button>
                 </div>
 
                 <div className="data-table">
