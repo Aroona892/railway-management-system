@@ -9,6 +9,7 @@ import { SignUp } from './components/SignUp'
 import { AdminLogin } from './components/AdminLogin'
 import { AdminDashboard } from './components/AdminDashboard'
 import { About } from './pages/About'
+import { BookNow } from './pages/BookNow'
 import './App.css'
 
 const SAMPLE_ROUTES = [
@@ -112,6 +113,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/about" element={<About />} />
+          <Route path="/book-now" element={<BookNow />} />
         </Routes>
       </main>
       <Footer />
