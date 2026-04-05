@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { createBooking } from '../services/bookingService'
 import './BookNow.css'
 
 const AVAILABLE_TRAINS = [
@@ -49,7 +51,10 @@ const AVAILABLE_TRAINS = [
 ]
 
 export function BookNow() {
-  const [selectedTrainId, setSelectedTrainId] = useState(1)
+  const location = useLocation()
+  const trainFromState = location.state?.train
+
+  const [selectedTrainId, setSelectedTrainId] = useState(trainFromState ? trainFromState.id : 1)
   const [formData, setFormData] = useState({
     journeyDate: '',
     seatClass: '',
@@ -62,8 +67,10 @@ export function BookNow() {
 
   const [showModal, setShowModal] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [bookingError, setBookingError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const selectedTrain = AVAILABLE_TRAINS.find(train => train.id === selectedTrainId) || AVAILABLE_TRAINS[0]
+  const selectedTrain = trainFromState || AVAILABLE_TRAINS.find(train => train.id === selectedTrainId) || AVAILABLE_TRAINS[0]
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -157,10 +164,60 @@ export function BookNow() {
     }
   }
 
-  const handleConfirmBooking = () => {
-    setShowModal(false)
-    setShowSuccess(true)
-    // Here you would typically send the data to an API
+  const handleConfirmBooking = async () => {
+    const bookingPayload = {
+      train: {
+        id: selectedTrain.id,
+        name: selectedTrain.name,
+        number: selectedTrain.number,
+        source: selectedTrain.source,
+        destination: selectedTrain.destination,
+        departureTime: selectedTrain.departureTime,
+        arrivalTime: selectedTrain.arrivalTime,
+        fare: selectedTrain.fare
+      },
+      travelDetails: {
+        journeyDate: formData.journeyDate,
+        seatClass: formData.seatClass,
+        numPassengers: formData.numPassengers
+      },
+      passengers: formData.passengers.map((passenger) => ({
+        name: passenger.name,
+        age: passenger.age,
+        gender: passenger.gender,
+        cnic: passenger.cnic
+      })),
+      contact: {
+        phone: formData.contactPhone,
+        email: formData.contactEmail
+      },
+      pricing: {
+        ticketTotal: selectedTrain.fare * formData.numPassengers,
+        serviceCharge: 100,
+        totalAmount: selectedTrain.fare * formData.numPassengers + 100
+      }
+    }
+
+    console.log('Final booking payload:', bookingPayload)
+
+    setIsSubmitting(true)
+    setBookingError('')
+
+    try {
+      const response = await createBooking(bookingPayload)
+
+      if (response.success) {
+        setShowSuccess(true)
+        setShowModal(false)
+      } else {
+        setBookingError(response.message || 'Failed to submit booking.')
+      }
+    } catch (error) {
+      setBookingError('Unable to submit booking. Please try again later.')
+      console.error('Booking service error:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleEditDetails = () => {
@@ -179,17 +236,24 @@ export function BookNow() {
           <div className="train-selection-form">
             <div className="form-group">
               <label htmlFor="train-select">Available Trains</label>
-              <select
-                id="train-select"
-                value={selectedTrainId}
-                onChange={(e) => setSelectedTrainId(Number(e.target.value))}
-              >
-                {AVAILABLE_TRAINS.map(train => (
-                  <option key={train.id} value={train.id}>
-                    {train.name} ({train.source} → {train.destination})
-                  </option>
-                ))}
-              </select>
+              {trainFromState ? (
+                <div className="selected-train-display">
+                  <span className="selected-train-name">{trainFromState.name} ({trainFromState.source} → {trainFromState.destination})</span>
+                  <small className="train-note">Train selected from previous page</small>
+                </div>
+              ) : (
+                <select
+                  id="train-select"
+                  value={selectedTrainId}
+                  onChange={(e) => setSelectedTrainId(Number(e.target.value))}
+                >
+                  {AVAILABLE_TRAINS.map(train => (
+                    <option key={train.id} value={train.id}>
+                      {train.name} ({train.source} → {train.destination})
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
           </div>
         </section>
@@ -415,6 +479,8 @@ export function BookNow() {
           </div>
         </section>
 
+        {bookingError && <div className="booking-error">{bookingError}</div>}
+
         <section className="booking-confirmation-section">
           <h2 className="section-title">Booking Confirmation</h2>
           <p className="confirmation-note">
@@ -423,7 +489,9 @@ export function BookNow() {
           </p>
           <div className="action-buttons">
             <button type="button" className="btn btn-cancel">Cancel</button>
-            <button type="submit" className="btn btn-book">Book Ticket</button>
+            <button type="submit" className="btn btn-book" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Book Ticket'}
+            </button>
           </div>
         </section>
         </form>
@@ -483,8 +551,8 @@ export function BookNow() {
               <button type="button" className="btn btn-edit" onClick={handleEditDetails}>
                 Edit Details
               </button>
-              <button type="button" className="btn btn-confirm" onClick={handleConfirmBooking}>
-                Confirm Booking
+              <button type="button" className="btn btn-confirm" onClick={handleConfirmBooking} disabled={isSubmitting}>
+                {isSubmitting ? 'Confirming...' : 'Confirm Booking'}
               </button>
             </div>
           </div>
