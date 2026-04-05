@@ -58,6 +58,7 @@ export function BookNow() {
     contactPhone: '',
     contactEmail: ''
   })
+  const [errors, setErrors] = useState({})
 
   const [showModal, setShowModal] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
