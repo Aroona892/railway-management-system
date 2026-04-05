@@ -59,7 +59,8 @@ export function BookNow() {
     contactEmail: ''
   })
 
-  const [errors, setErrors] = useState({})
+  const [showModal, setShowModal] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const selectedTrain = AVAILABLE_TRAINS.find(train => train.id === selectedTrainId) || AVAILABLE_TRAINS[0]
 
@@ -151,10 +152,18 @@ export function BookNow() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (validateForm()) {
-      // Here you would typically send the data to an API
-      alert('Booking submitted successfully! A confirmation email will be sent.')
-      // Reset form or redirect
+      setShowModal(true)
     }
+  }
+
+  const handleConfirmBooking = () => {
+    setShowModal(false)
+    setShowSuccess(true)
+    // Here you would typically send the data to an API
+  }
+
+  const handleEditDetails = () => {
+    setShowModal(false)
   }
   return (
     <div className="book-now-page">
@@ -417,7 +426,69 @@ export function BookNow() {
           </div>
         </section>
         </form>
+
+        {showSuccess && (
+          <section className="success-section">
+            <div className="success-message">
+              <h2 className="success-title">Booking Successful!</h2>
+              <p className="success-text">
+                Your train ticket has been booked successfully. A confirmation email has been sent to {formData.contactEmail}.
+              </p>
+              <p className="success-text">
+                Please check your email for the booking details and e-ticket.
+              </p>
+            </div>
+          </section>
+        )}
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="modal-title">Confirm Your Booking</h2>
+            <div className="booking-summary">
+              <div className="summary-item">
+                <span className="summary-label">Train:</span>
+                <span className="summary-value">{selectedTrain.name} ({selectedTrain.number})</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Route:</span>
+                <span className="summary-value">{selectedTrain.source} → {selectedTrain.destination}</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Date:</span>
+                <span className="summary-value">{formData.journeyDate}</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Class:</span>
+                <span className="summary-value">{formData.seatClass}</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Passengers:</span>
+                <span className="summary-value">{formData.numPassengers}</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Passenger Names:</span>
+                <span className="summary-value">
+                  {formData.passengers.map(p => p.name).join(', ')}
+                </span>
+              </div>
+              <div className="summary-item total">
+                <span className="summary-label">Total Amount:</span>
+                <span className="summary-value">PKR {selectedTrain.fare * formData.numPassengers + 100}</span>
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button type="button" className="btn btn-edit" onClick={handleEditDetails}>
+                Edit Details
+              </button>
+              <button type="button" className="btn btn-confirm" onClick={handleConfirmBooking}>
+                Confirm Booking
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
