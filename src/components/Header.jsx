@@ -4,8 +4,8 @@ import './Header.css'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
-  { to: '#book', label: 'Book Tickets' },
-  { to: '#schedules', label: 'Schedules' },
+  { to: '/book-now', label: 'Book Tickets' },
+  { to: '/schedules', label: 'Schedules' },
   { to: '/about', label: 'About' },
 ]
 
@@ -70,9 +70,9 @@ export function Header() {
                 <Link to="/signup" className="site-header__signup">
                   Sign Up
                 </Link>
-                <a href="#book" className="site-header__cta">
+                <Link to="/book-now" className="site-header__cta">
                   Book Now
-                </a>
+                </Link>
                 <button
                   type="button"
                   className="site-header__menu-btn"

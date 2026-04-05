@@ -1,0 +1,226 @@
+.book-tickets-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 40px 20px;
+}
+
+.book-tickets-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.book-tickets-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.book-tickets-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.book-tickets-subtitle {
+  font-size: 1rem;
+  color: #475569;
+}
+
+.available-trains-section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #14b8a6;
+  padding-bottom: 10px;
+}
+
+.trains-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.train-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 22px;
+  background: #f8fafc;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.train-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.train-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.train-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px;
+}
+
+.train-number {
+  margin: 0;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.train-fare-box {
+  min-width: 120px;
+  text-align: right;
+  background: #ecfeff;
+  border: 1px solid #99f6e4;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.fare-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #0f766e;
+  margin-bottom: 4px;
+}
+
+.fare-amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #115e59;
+}
+
+.train-route-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.route-point {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.route-label {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.route-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.route-arrow {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #14b8a6;
+  text-align: center;
+}
+
+.train-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.detail-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.train-card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-book {
+  background: #14b8a6;
+  color: white;
+}
+
+.btn-book:hover {
+  background: #0f766e;
+}
+
+@media (max-width: 768px) {
+  .book-tickets-title {
+    font-size: 1.8rem;
+  }
+
+  .available-trains-section {
+    padding: 20px;
+  }
+
+  .train-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .train-fare-box {
+    text-align: left;
+    min-width: unset;
+    width: 100%;
+  }
+
+  .train-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .train-route-row {
+    grid-template-columns: 1fr;
+  }
+
+  .route-arrow {
+    display: none;
+  }
+
+  .train-card-actions {
+    justify-content: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

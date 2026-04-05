@@ -1,11 +1,21 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Hero.css'
 
 /**
  * Hero headline + floating ticket booking widget (3D-style card).
  */
+const TRAIN_CITIES = [
+  'Karachi Cantonment',
+  'Karachi City',
+  'Lahore',
+  'Islamabad',
+  'Rawalpindi',
+  'Peshawar'
+]
 export function Hero() {
-  const [origin, setOrigin] = useState('Karachi')
+  const navigate = useNavigate()
+  const [origin, setOrigin] = useState('Karachi Cantonment')
   const [destination, setDestination] = useState('Lahore')
   const [date, setDate] = useState('')
   const [passengers, setPassengers] = useState('1')
@@ -35,27 +45,38 @@ export function Hero() {
             </header>
             <form
               className="booking-widget__form"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={(e) => {
+               e.preventDefault()
+               navigate('/schedules')
+              }}
             >
               <label className="booking-widget__field">
                 <span className="booking-widget__label">From</span>
-                <input
-                  type="text"
-                  value={origin}
-                  onChange={(e) => setOrigin(e.target.value)}
-                  className="booking-widget__input"
-                  autoComplete="off"
-                />
+                <select
+                 value={origin}
+                 onChange={(e) => setOrigin(e.target.value)}
+                 className="booking-widget__input booking-widget__select"
+                >
+                 {TRAIN_CITIES.map((city) => (
+                  <option key={city} value={city}>
+                   {city}
+                  </option>
+                 ))}
+                </select>
               </label>
               <label className="booking-widget__field">
-                <span className="booking-widget__label">To</span>
-                <input
-                  type="text"
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  className="booking-widget__input"
-                  autoComplete="off"
-                />
+               <span className="booking-widget__label">To</span>
+               <select
+                 value={destination}
+                 onChange={(e) => setDestination(e.target.value)}
+                 className="booking-widget__input booking-widget__select"
+               >
+                 {TRAIN_CITIES.map((city) => (
+                  <option key={city} value={city}>
+                   {city}
+                  </option>
+                ))}
+               </select>
               </label>
               <label className="booking-widget__field">
                 <span className="booking-widget__label">Date</span>
@@ -73,7 +94,7 @@ export function Hero() {
                   onChange={(e) => setPassengers(e.target.value)}
                   className="booking-widget__input booking-widget__select"
                 >
-                  {[1, 2, 3, 4, 5, 6].map((n) => (
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                     <option key={n} value={String(n)}>
                       {n}
                     </option>

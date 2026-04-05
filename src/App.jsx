@@ -10,6 +10,7 @@ import { AdminLogin } from './components/AdminLogin'
 import { AdminDashboard } from './components/AdminDashboard'
 import { About } from './pages/About'
 import { BookNow } from './pages/BookNow'
+import { BookTickets } from './pages/BookTickets'
 import './App.css'
 
 const SAMPLE_ROUTES = [
@@ -102,6 +103,15 @@ function HomePage() {
   )
 }
 
+function SchedulesPlaceholder() {
+  return (
+    <div style={{ padding: '40px', textAlign: 'center' }}>
+      <h1>Schedules Page</h1>
+      <p>This will be implemented in Phase 2.</p>
+    </div>
+  )
+}
+
 function App() {
   return (
     <Router>
@@ -113,7 +123,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/about" element={<About />} />
+          <Route path="/book-tickets" element={<BookTickets />} />
           <Route path="/book-now" element={<BookNow />} />
+          <Route path="/schedules" element={<SchedulesPlaceholder />} />
         </Routes>
       </main>
       <Footer />

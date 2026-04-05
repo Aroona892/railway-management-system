@@ -52,7 +52,7 @@ const AVAILABLE_TRAINS = [
 
 export function BookNow() {
   const location = useLocation()
-  const trainFromState = location.state?.train
+  const trainFromState = location.state?.selectedTrain
 
   const [selectedTrainId, setSelectedTrainId] = useState(trainFromState ? trainFromState.id : 1)
   const [formData, setFormData] = useState({
