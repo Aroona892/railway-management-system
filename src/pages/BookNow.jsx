@@ -1,18 +1,55 @@
 import { useState } from 'react'
 import './BookNow.css'
 
-const TRAIN_DATA = {
-  name: 'Green Line Express',
-  number: 'GLE-123',
-  source: 'Karachi Cantonment',
-  destination: 'Islamabad',
-  departureTime: '08:00 AM',
-  arrivalTime: '05:00 AM (Next Day)',
-  availableSeats: 45,
-  fare: 2500
-}
+const AVAILABLE_TRAINS = [
+  {
+    id: 1,
+    name: 'Green Line Express',
+    number: 'GLE-123',
+    source: 'Karachi Cantonment',
+    destination: 'Islamabad',
+    departureTime: '08:00 AM',
+    arrivalTime: '05:00 AM (Next Day)',
+    availableSeats: 45,
+    fare: 2500
+  },
+  {
+    id: 2,
+    name: 'Karachi Express',
+    number: 'KE-456',
+    source: 'Lahore',
+    destination: 'Karachi City',
+    departureTime: '10:00 PM',
+    arrivalTime: '04:00 PM (Next Day)',
+    availableSeats: 32,
+    fare: 2200
+  },
+  {
+    id: 3,
+    name: 'Awam Express',
+    number: 'AE-789',
+    source: 'Peshawar',
+    destination: 'Karachi',
+    departureTime: '06:00 PM',
+    arrivalTime: '05:00 AM (3 Days)',
+    availableSeats: 28,
+    fare: 1800
+  },
+  {
+    id: 4,
+    name: 'Tezgam Express',
+    number: 'TE-101',
+    source: 'Karachi City',
+    destination: 'Lahore',
+    departureTime: '02:00 PM',
+    arrivalTime: '08:00 AM (Next Day)',
+    availableSeats: 50,
+    fare: 2400
+  }
+]
 
 export function BookNow() {
+  const [selectedTrainId, setSelectedTrainId] = useState(1)
   const [formData, setFormData] = useState({
     journeyDate: '',
     seatClass: '',
@@ -26,6 +63,8 @@ export function BookNow() {
   })
 
   const [errors, setErrors] = useState({})
+
+  const selectedTrain = AVAILABLE_TRAINS.find(train => train.id === selectedTrainId) || AVAILABLE_TRAINS[0]
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -59,6 +98,8 @@ export function BookNow() {
     // Passenger Details
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Full name is required'
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.fullName.trim())) {
+      newErrors.fullName = 'Full name should contain only letters and spaces'
     }
     if (!formData.age || isNaN(formData.age) || formData.age < 1 || formData.age > 120) {
       newErrors.age = 'Please enter a valid age (1-120)'
@@ -71,6 +112,8 @@ export function BookNow() {
     }
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required'
+    } else if (!/^[0-9+\-\s]+$/.test(formData.phone.trim())) {
+      newErrors.phone = 'Phone number should contain only numbers, spaces, + or -'
     }
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required'
@@ -98,47 +141,67 @@ export function BookNow() {
           <p className="book-now-subtitle">Secure and easy booking for your railway journey</p>
         </header>
 
+        <section className="train-selection-section">
+          <h2 className="section-title">Select Your Train</h2>
+          <div className="train-selection-form">
+            <div className="form-group">
+              <label htmlFor="train-select">Available Trains</label>
+              <select
+                id="train-select"
+                value={selectedTrainId}
+                onChange={(e) => setSelectedTrainId(Number(e.target.value))}
+              >
+                {AVAILABLE_TRAINS.map(train => (
+                  <option key={train.id} value={train.id}>
+                    {train.name} ({train.source} → {train.destination})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </section>
+
         <section className="train-info-section">
           <h2 className="section-title">Train Information</h2>
           <div className="train-details">
             <div className="detail-pair">
               <div className="detail-item">
                 <span className="detail-label">Train Name</span>
-                <span className="detail-value">{TRAIN_DATA.name}</span>
+                <span className="detail-value">{selectedTrain.name}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">Train Number</span>
-                <span className="detail-value">{TRAIN_DATA.number}</span>
+                <span className="detail-value">{selectedTrain.number}</span>
               </div>
             </div>
             <div className="detail-pair">
               <div className="detail-item">
                 <span className="detail-label">From</span>
-                <span className="detail-value">{TRAIN_DATA.source}</span>
+                <span className="detail-value">{selectedTrain.source}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">To</span>
-                <span className="detail-value">{TRAIN_DATA.destination}</span>
+                <span className="detail-value">{selectedTrain.destination}</span>
               </div>
             </div>
             <div className="detail-pair">
               <div className="detail-item">
                 <span className="detail-label">Departure</span>
-                <span className="detail-value">{TRAIN_DATA.departureTime}</span>
+                <span className="detail-value">{selectedTrain.departureTime}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">Arrival</span>
-                <span className="detail-value">{TRAIN_DATA.arrivalTime}</span>
+                <span className="detail-value">{selectedTrain.arrivalTime}</span>
               </div>
             </div>
             <div className="detail-pair">
               <div className="detail-item">
                 <span className="detail-label">Available Seats</span>
-                <span className="detail-value">{TRAIN_DATA.availableSeats}</span>
+                <span className="detail-value">{selectedTrain.availableSeats}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">Fare per Ticket</span>
-                <span className="detail-value">PKR {TRAIN_DATA.fare}</span>
+                <span className="detail-value">PKR {selectedTrain.fare}</span>
               </div>
             </div>
           </div>
@@ -293,7 +356,7 @@ export function BookNow() {
           <div className="fare-details">
             <div className="fare-row">
               <span className="fare-label">Ticket Fare:</span>
-              <span className="fare-value">PKR {TRAIN_DATA.fare}</span>
+              <span className="fare-value">PKR {selectedTrain.fare}</span>
             </div>
             <div className="fare-row">
               <span className="fare-label">Service Charges:</span>
@@ -301,7 +364,7 @@ export function BookNow() {
             </div>
             <div className="fare-row total">
               <span className="fare-label">Total Amount:</span>
-              <span className="fare-value">PKR {TRAIN_DATA.fare + 100}</span>
+              <span className="fare-value">PKR {selectedTrain.fare + 100}</span>
             </div>
           </div>
         </section>

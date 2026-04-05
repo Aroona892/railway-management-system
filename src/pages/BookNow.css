@@ -43,7 +43,7 @@
   padding-bottom: 10px;
 }
 
-.train-info-section,
+.train-selection-section,
 .travel-info-section,
 .passenger-details-section,
 .fare-summary-section,
@@ -52,8 +52,14 @@
   border-bottom: 1px solid var(--border-soft);
 }
 
-.train-info-section {
-  background: var(--bg-page);
+.train-selection-section {
+  background: var(--bg-white);
+  border-bottom: 2px solid var(--accent-emerald);
+}
+
+.train-selection-form {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .train-details {
