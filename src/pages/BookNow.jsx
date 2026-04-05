@@ -53,13 +53,10 @@ export function BookNow() {
   const [formData, setFormData] = useState({
     journeyDate: '',
     seatClass: '',
-    passengers: 1,
-    fullName: '',
-    age: '',
-    gender: '',
-    cnic: '',
-    phone: '',
-    email: ''
+    numPassengers: 1,
+    passengers: [{ name: '', age: '', gender: '', cnic: '' }],
+    contactPhone: '',
+    contactEmail: ''
   })
 
   const [errors, setErrors] = useState({})
@@ -68,10 +65,28 @@ export function BookNow() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+
+    if (name === 'numPassengers') {
+      const num = parseInt(value) || 1
+      setFormData(prev => ({
+        ...prev,
+        numPassengers: num,
+        passengers: Array.from({ length: num }, (_, i) => prev.passengers[i] || { name: '', age: '', gender: '', cnic: '' })
+      }))
+    } else if (name.startsWith('passenger-')) {
+      const [, indexStr, field] = name.split('-')
+      const index = parseInt(indexStr)
+      setFormData(prev => ({
+        ...prev,
+        passengers: prev.passengers.map((p, i) => i === index ? { ...p, [field]: value } : p)
+      }))
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -91,34 +106,42 @@ export function BookNow() {
     if (!formData.seatClass) {
       newErrors.seatClass = 'Please select a seat class'
     }
-    if (formData.passengers < 1) {
-      newErrors.passengers = 'Number of passengers must be at least 1'
+    if (formData.numPassengers < 1) {
+      newErrors.numPassengers = 'Number of passengers must be at least 1'
     }
 
     // Passenger Details
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required'
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.fullName.trim())) {
-      newErrors.fullName = 'Full name should contain only letters and spaces'
+    formData.passengers.forEach((passenger, index) => {
+      if (!passenger.name.trim()) {
+        newErrors[`passenger-${index}-name`] = 'Full name is required'
+      } else if (!/^[a-zA-Z\s]+$/.test(passenger.name.trim())) {
+        newErrors[`passenger-${index}-name`] = 'Full name should contain only letters and spaces'
+      }
+
+      if (!passenger.age || isNaN(passenger.age) || passenger.age < 1 || passenger.age > 120) {
+        newErrors[`passenger-${index}-age`] = 'Please enter a valid age (1-120)'
+      }
+
+      if (!passenger.gender) {
+        newErrors[`passenger-${index}-gender`] = 'Please select a gender'
+      }
+
+      if (!passenger.cnic.trim()) {
+        newErrors[`passenger-${index}-cnic`] = 'CNIC/ID number is required'
+      }
+    })
+
+    // Contact Details
+    if (!formData.contactPhone.trim()) {
+      newErrors.contactPhone = 'Phone number is required'
+    } else if (!/^[0-9+\-\s]+$/.test(formData.contactPhone.trim())) {
+      newErrors.contactPhone = 'Phone number should contain only numbers, spaces, + or -'
     }
-    if (!formData.age || isNaN(formData.age) || formData.age < 1 || formData.age > 120) {
-      newErrors.age = 'Please enter a valid age (1-120)'
-    }
-    if (!formData.gender) {
-      newErrors.gender = 'Please select a gender'
-    }
-    if (!formData.cnic.trim()) {
-      newErrors.cnic = 'CNIC/ID number is required'
-    }
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required'
-    } else if (!/^[0-9+\-\s]+$/.test(formData.phone.trim())) {
-      newErrors.phone = 'Phone number should contain only numbers, spaces, + or -'
-    }
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
+
+    if (!formData.contactEmail.trim()) {
+      newErrors.contactEmail = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(formData.contactEmail)) {
+      newErrors.contactEmail = 'Please enter a valid email address'
     }
 
     setErrors(newErrors)
@@ -246,107 +269,120 @@ export function BookNow() {
                 <input
                   type="number"
                   id="passengers"
-                  name="passengers"
+                  name="numPassengers"
                   min="1"
                   max="10"
-                  value={formData.passengers}
+                  value={formData.numPassengers}
                   onChange={handleInputChange}
-                  className={errors.passengers ? 'error' : ''}
+                  className={errors.numPassengers ? 'error' : ''}
                   required
                 />
-                {errors.passengers && <span className="error-message">{errors.passengers}</span>}
+                {errors.numPassengers && <span className="error-message">{errors.numPassengers}</span>}
               </div>
             </div>
           </section>
 
         <section className="passenger-details-section">
           <h2 className="section-title">Passenger Details</h2>
-          <div className="passenger-form">
+          <div className="passengers-container">
+            {formData.passengers.map((passenger, index) => (
+              <div key={index} className="passenger-card">
+                <h3 className="passenger-title">Passenger {index + 1}</h3>
+                <div className="passenger-form">
+                  <div className="form-group">
+                    <label htmlFor={`passenger-${index}-name`}>Full Name</label>
+                    <input
+                      type="text"
+                      id={`passenger-${index}-name`}
+                      name={`passenger-${index}-name`}
+                      value={passenger.name}
+                      onChange={handleInputChange}
+                      className={errors[`passenger-${index}-name`] ? 'error' : ''}
+                      required
+                    />
+                    {errors[`passenger-${index}-name`] && <span className="error-message">{errors[`passenger-${index}-name`]}</span>}
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor={`passenger-${index}-age`}>Age</label>
+                    <input
+                      type="number"
+                      id={`passenger-${index}-age`}
+                      name={`passenger-${index}-age`}
+                      min="1"
+                      max="120"
+                      value={passenger.age}
+                      onChange={handleInputChange}
+                      className={errors[`passenger-${index}-age`] ? 'error' : ''}
+                      required
+                    />
+                    {errors[`passenger-${index}-age`] && <span className="error-message">{errors[`passenger-${index}-age`]}</span>}
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor={`passenger-${index}-gender`}>Gender</label>
+                    <select
+                      id={`passenger-${index}-gender`}
+                      name={`passenger-${index}-gender`}
+                      value={passenger.gender}
+                      onChange={handleInputChange}
+                      className={errors[`passenger-${index}-gender`] ? 'error' : ''}
+                      required
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                    {errors[`passenger-${index}-gender`] && <span className="error-message">{errors[`passenger-${index}-gender`]}</span>}
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor={`passenger-${index}-cnic`}>CNIC/ID Card Number</label>
+                    <input
+                      type="text"
+                      id={`passenger-${index}-cnic`}
+                      name={`passenger-${index}-cnic`}
+                      pattern="[0-9]{13}"
+                      placeholder="1234567890123"
+                      value={passenger.cnic}
+                      onChange={handleInputChange}
+                      className={errors[`passenger-${index}-cnic`] ? 'error' : ''}
+                      required
+                    />
+                    {errors[`passenger-${index}-cnic`] && <span className="error-message">{errors[`passenger-${index}-cnic`]}</span>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="contact-details-section">
+          <h2 className="section-title">Contact Details</h2>
+          <div className="contact-form">
             <div className="form-group">
-              <label htmlFor="full-name">Full Name</label>
-              <input
-                type="text"
-                id="full-name"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                className={errors.fullName ? 'error' : ''}
-                required
-              />
-              {errors.fullName && <span className="error-message">{errors.fullName}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="age">Age</label>
-              <input
-                type="number"
-                id="age"
-                name="age"
-                min="1"
-                max="120"
-                value={formData.age}
-                onChange={handleInputChange}
-                className={errors.age ? 'error' : ''}
-                required
-              />
-              {errors.age && <span className="error-message">{errors.age}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="gender">Gender</label>
-              <select
-                id="gender"
-                name="gender"
-                value={formData.gender}
-                onChange={handleInputChange}
-                className={errors.gender ? 'error' : ''}
-                required
-              >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-              {errors.gender && <span className="error-message">{errors.gender}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="cnic">CNIC/ID Card Number</label>
-              <input
-                type="text"
-                id="cnic"
-                name="cnic"
-                pattern="[0-9]{13}"
-                placeholder="1234567890123"
-                value={formData.cnic}
-                onChange={handleInputChange}
-                className={errors.cnic ? 'error' : ''}
-                required
-              />
-              {errors.cnic && <span className="error-message">{errors.cnic}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="phone">Phone Number</label>
+              <label htmlFor="contact-phone">Phone Number</label>
               <input
                 type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
+                id="contact-phone"
+                name="contactPhone"
+                value={formData.contactPhone}
                 onChange={handleInputChange}
-                className={errors.phone ? 'error' : ''}
+                className={errors.contactPhone ? 'error' : ''}
                 required
               />
-              {errors.phone && <span className="error-message">{errors.phone}</span>}
+              {errors.contactPhone && <span className="error-message">{errors.contactPhone}</span>}
             </div>
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="contact-email">Email</label>
               <input
                 type="email"
-                id="email"
-                name="email"
-                value={formData.email}
+                id="contact-email"
+                name="contactEmail"
+                value={formData.contactEmail}
                 onChange={handleInputChange}
-                className={errors.email ? 'error' : ''}
+                className={errors.contactEmail ? 'error' : ''}
                 required
               />
-              {errors.email && <span className="error-message">{errors.email}</span>}
+              {errors.contactEmail && <span className="error-message">{errors.contactEmail}</span>}
             </div>
           </div>
         </section>
@@ -355,8 +391,8 @@ export function BookNow() {
           <h2 className="section-title">Fare Summary</h2>
           <div className="fare-details">
             <div className="fare-row">
-              <span className="fare-label">Ticket Fare:</span>
-              <span className="fare-value">PKR {selectedTrain.fare}</span>
+              <span className="fare-label">Ticket Fare ({formData.numPassengers} × PKR {selectedTrain.fare}):</span>
+              <span className="fare-value">PKR {selectedTrain.fare * formData.numPassengers}</span>
             </div>
             <div className="fare-row">
               <span className="fare-label">Service Charges:</span>
@@ -364,7 +400,7 @@ export function BookNow() {
             </div>
             <div className="fare-row total">
               <span className="fare-label">Total Amount:</span>
-              <span className="fare-value">PKR {selectedTrain.fare + 100}</span>
+              <span className="fare-value">PKR {selectedTrain.fare * formData.numPassengers + 100}</span>
             </div>
           </div>
         </section>

@@ -97,10 +97,36 @@
 }
 
 .travel-form,
-.passenger-form {
+.passengers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.passenger-card {
+  background: var(--bg-page);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.passenger-title {
+  margin: 0 0 15px;
+  color: var(--pak-green);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.contact-details-section {
+  padding: 30px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.contact-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  max-width: 600px;
 }
 
 .form-group {
@@ -226,7 +252,8 @@
 
   .train-details,
   .travel-form,
-  .passenger-form {
+  .passenger-form,
+  .contact-form {
     grid-template-columns: 1fr;
   }
 
