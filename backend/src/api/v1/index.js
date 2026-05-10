@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import { authRouter } from './auth/router.js'
 import { schedulesRouter } from './schedules/router.js'
+import bookingsRouter from './bookings/router.js'
 import { adminStationsRouter } from './admin/stations/router.js'
 import { adminTrainsRouter } from './admin/trains/router.js'
 import { adminRoutesRouter } from './admin/routes/router.js'
@@ -16,6 +17,7 @@ v1Router.get('/', (_req, res) => {
 
 v1Router.use('/auth', authRouter)
 v1Router.use('/schedules', schedulesRouter)
+v1Router.use('/bookings', bookingsRouter)
 v1Router.use('/admin/stations', adminStationsRouter)
 v1Router.use('/admin/trains', adminTrainsRouter)
 v1Router.use('/admin/routes', adminRoutesRouter)

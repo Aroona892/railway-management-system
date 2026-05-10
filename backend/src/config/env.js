@@ -14,6 +14,8 @@ const serverSchema = baseSchema.extend({
   SEED_ADMIN_NAME: z.string().min(1).default('Admin'),
   SEED_ADMIN_EMAIL: z.string().email().default('admin@example.com'),
   SEED_ADMIN_PASSWORD: z.string().min(6).default('admin123'),
+  EMAIL_USER: z.string().optional(),
+  EMAIL_PASSWORD: z.string().optional(),
 })
 
 function parseEnv(schema, label) {

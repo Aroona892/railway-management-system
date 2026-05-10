@@ -68,6 +68,7 @@ export function BookNow() {
   const [showModal, setShowModal] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [bookingError, setBookingError] = useState('')
+  const [bookingResponse, setBookingResponse] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const selectedTrain = trainFromState || AVAILABLE_TRAINS.find(train => train.id === selectedTrainId) || AVAILABLE_TRAINS[0]
@@ -207,6 +208,7 @@ export function BookNow() {
       const response = await createBooking(bookingPayload)
 
       if (response.success) {
+        setBookingResponse(response)
         setShowSuccess(true)
         setShowModal(false)
       } else {
@@ -499,12 +501,47 @@ export function BookNow() {
         {showSuccess && (
           <section className="success-section">
             <div className="success-message">
-              <h2 className="success-title">Booking Successful!</h2>
+              <h2 className="success-title">✓ Booking Successful!</h2>
               <p className="success-text">
-                Your train ticket has been booked successfully. A confirmation email has been sent to {formData.contactEmail}.
+                Your train ticket has been booked successfully. A confirmation email has been sent to <strong>{formData.contactEmail}</strong>.
               </p>
+              
+              {bookingResponse?.booking?.reference && (
+                <div className="booking-reference">
+                  <p className="reference-label">Your Booking Reference:</p>
+                  <p className="reference-code">{bookingResponse.booking.reference}</p>
+                </div>
+              )}
+
+              <div className="ticket-details">
+                <div className="detail">
+                  <span className="label">Train:</span>
+                  <span className="value">{selectedTrain.name} ({selectedTrain.number})</span>
+                </div>
+                <div className="detail">
+                  <span className="label">Route:</span>
+                  <span className="value">{selectedTrain.source} → {selectedTrain.destination}</span>
+                </div>
+                <div className="detail">
+                  <span className="label">Date:</span>
+                  <span className="value">{formData.journeyDate}</span>
+                </div>
+                <div className="detail">
+                  <span className="label">Departure Time:</span>
+                  <span className="value">{selectedTrain.departureTime}</span>
+                </div>
+                <div className="detail">
+                  <span className="label">Passengers:</span>
+                  <span className="value">{formData.numPassengers}</span>
+                </div>
+                <div className="detail">
+                  <span className="label">Total Amount:</span>
+                  <span className="value" style={{fontWeight: 'bold', color: '#27ae60'}}>PKR {selectedTrain.fare * formData.numPassengers + 100}</span>
+                </div>
+              </div>
+
               <p className="success-text">
-                Please check your email for the booking details and e-ticket.
+                Please check your email for the detailed booking confirmation and e-ticket.
               </p>
             </div>
           </section>

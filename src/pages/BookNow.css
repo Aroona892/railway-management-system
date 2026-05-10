@@ -367,6 +367,64 @@
   margin-bottom: 8px;
 }
 
+.booking-reference {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border: 2px solid var(--accent-emerald);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin: 16px 0;
+}
+
+.reference-label {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0 0 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.reference-code {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--pak-green);
+  margin: 0;
+  letter-spacing: 0.05em;
+  font-family: 'Courier New', monospace;
+}
+
+.ticket-details {
+  background: #f8fbfd;
+  border: 1px solid #dce5ec;
+  border-radius: 14px;
+  padding: 18px;
+  margin: 16px 0;
+  text-align: left;
+}
+
+.ticket-details .detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ticket-details .detail:last-child {
+  border-bottom: none;
+}
+
+.ticket-details .label {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.ticket-details .value {
+  color: #0f172a;
+  font-weight: 700;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
